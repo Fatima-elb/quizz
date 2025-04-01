@@ -28,8 +28,8 @@ if(isset($_POST['btLogin'])) {  //var_dump('btLogin');
 }
 
 //Redirection
-//echo '<a href="quizz3.php?erreurLogin=Erreur de conexion!">Retour au quiz</a>';
+//echo '<a href="quizz.php?erreurLogin=Erreur de conexion!">Retour au quiz</a>';
 
-header('Location: quizz3.php',null,302);
+header('Location: quizz.php',null,302);
 exit;
 ?>

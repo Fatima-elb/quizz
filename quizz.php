@@ -1,25 +1,15 @@
 <?php
 session_start();
 
-//Déclaraiton des variables
-$questionsReponses = [
-	[
-		"Quelle est la couleur du cheval blanc de Napoléon ?",
-		"blanc",
-	],
-	[
-		"Quelle est le nom du cours de PHP ?",
-		"wssv",
-	],
-	[
-		"Quelle est le nom de cette école ?",
-		"epfc",
-	],
-	[
-		"Quelle est le jour du cours ?",
-		"mardi",
-	],
-];
+//Déclaration des variables
+$questionsReponses = file("questionsReponses.csv",FILE_IGNORE_NEW_LINES);
+//var_dump($questionsReponses);die;
+
+foreach($questionsReponses as $questionReponse) {
+	$questionReponse = explode("|",$questionReponse,2)		//var_dump($questionReponse);
+}
+unset($questionReponse);
+//var_dump($questionsReponses);die;
 
 $message = "Bienvenue dans notre quiz!";
 
@@ -56,7 +46,21 @@ if(isset($_GET['btSend']) && $statut=='reponse') {
 				$message = 'Bravo! <a href="?nroQuestion='.($nroQuestion+1).'&statut=next">Question suivante</a>';
 			} else {
 				$message = "Félicitations! Votre score est de $score points.";
+			
+				//Sauvegarde du score dans un fichier
+				$data = [
+					$_SESSION['login'] ?? "Anonyme",
+					"|",
+					$score,
+					"|"
+					time('d-m-Y',time()),
+					"\n"
+				];
+				file_put_contents("palmares.csv",$score."\n",FILE_APPEND);
 			}
+
+			//Réinitialiser le score à zéro
+			
 			
 			$score += 2;		//Ajouter 2 points au score
 			$statut = 'correct';	//Changer l'état de l'application
